@@ -56,16 +56,20 @@ PS C:\> Add-AdfsFarmNode -ServiceAccountCredential $fscredential -SQLConnectionS
 
 This example adds the local server computer as a node in an existing federation server farm that uses a Microsoft SQL Server database installed on a computer named SQLHost.
 
-### Example 2: Add a farm node and overwrite the existing configuration
+### Example 2: Add a farm node and overwrite the existing configuration using a service account
 ```
 PS C:\> $fscredential = Get-Credential
-PS C:\> Add-AdfsFarmNode -OverwriteConfiguration -PrimaryComputerName "PrimaryWIDHost" -PrimaryComputerPort 80 -ServiceAccountCredential $fscredential -CertificateThumbprint "8169c52b4ec6e77eb2ae17f028fe5da4e35c0bed"
+PS C:\> Add-AdfsFarmNode -OverwriteConfiguration -PrimaryComputerName "PrimaryWIDHost" -ServiceAccountCredential $fscredential -CertificateThumbprint "8169c52b4ec6e77eb2ae17f028fe5da4e35c0bed"
 ```
 
-This example overwrites an existing AD FS configuration database and adds the local server computer as a node in an existing federation server farm that uses Windows Internal Database (WID) and whose primary node is installed on a computer named PrimaryWIDHost.
-
-Note that the *PrimaryComputerPort* is required even if the default HTTP port of 80 is used and that the *CertificateThumbprint* parameter is only required if it is not already configured as a binding in IIS.
+This example overwrites an existing AD FS configuration database and adds the local server computer as a node in an existing federation server farm that uses Windows Internal Database (WID) and whose primary node is installed on a computer named "PrimaryWIDHost".
 Also, when specifying a value for the *CertificateThumbprint* parameter, the value you use must specify the thumbprint of a certificate that is currently installed in the local machine My store, and the certificate must be the same certificate that is used as the SSL certificate on the primary node.
+
+### Example 3: Add a farm node and overwrite the existing configuration using a GroupManagedServiceAccount
+```
+PS C:\> Add-AdfsFarmNode -OverwriteConfiguration -PrimaryComputerName "PrimaryWIDHost" -GroupServiceAccountIdentifier "CONTOSO\ADFSGMSA$" -CertificateThumbprint "8169c52b4ec6e77eb2ae17f028fe5da4e35c0bed"
+```
+This example overwrites an existing AD FS configuration database and adds the local server computer as a node in an existing federation server farm that uses Windows Internal Database (WID) , whose primary node is installed on a computer named "PrimaryWIDHost" and uses a GroupManagedServiceAccount.
 
 ## PARAMETERS
 
